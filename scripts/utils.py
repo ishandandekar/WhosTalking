@@ -57,7 +57,7 @@ def unzip_data(
 
 # Create a function to implement a ModelCheckpoint callback with a specific filename
 def create_model_checkpoint(
-    model_name: str, save_path: str = "model_experiments"
+    model_name: str, monitor: str, save_path: str = "model_experiments"
 ) -> tf.keras.callbacks.ModelCheckpoint:
     """
     Returns a model checkpoint callback
@@ -74,6 +74,7 @@ def create_model_checkpoint(
         verbose=1,
         save_best_only=True,
         save_weights_only=True,
+        monitor=monitor,
     )
 
 
