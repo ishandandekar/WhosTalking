@@ -51,7 +51,7 @@ def unzip_data(
     zip_ref.extractall(data_dir)
     zip_ref.close()
     if return_path:
-        return os.path.join(os.path.expanduser("~"), f"{data_dir}/{filename[:-4]}")
+        return f"{data_dir}/{filename[:-4]}"
     return None
 
 
