@@ -1,7 +1,8 @@
-from typing import Dict
+from typing import Dict, Union
 import matplotlib.pyplot as plt
 import tensorflow as tf
-import glob
+import os
+import zipfile
 
 
 def plot_loss_curves(history: tf.keras.callbacks.History) -> None:
@@ -32,29 +33,34 @@ def plot_loss_curves(history: tf.keras.callbacks.History) -> None:
     plt.legend()
 
 
-import zipfile
-
-
-def unzip_data(filename: str, data_dir="data") -> None:
+def unzip_data(
+    filename: str, data_dir="data", return_path: bool = False
+) -> Union[None, str]:
     """
     Unzips filename into the current working directory.
+
     Args:
         filename (str): a filepath to a target zip folder to be unzipped.
+        data_dir (str, optional): Directory to unzip the data to. Defaults to "data".
+        return_path (bool, optional): Flag to return the path to the unzipped data directory. Defaults to False.
+
+    Returns:
+        Union[None, str]: Path to the file
     """
     zip_ref = zipfile.ZipFile(filename, "r")
     zip_ref.extractall(data_dir)
     zip_ref.close()
-
-
-import os
-import tensorflow as tf
+    if return_path:
+        return os.path.join(os.path.expanduser("~"), f"{data_dir}/{filename[:-4]}")
+    return None
 
 
 # Create a function to implement a ModelCheckpoint callback with a specific filename
 def create_model_checkpoint(
     model_name: str, save_path: str = "model_experiments"
 ) -> tf.keras.callbacks.ModelCheckpoint:
-    """Returns a model checkpoint callback
+    """
+    Returns a model checkpoint callback
 
     Args:
         model_name (str): Name of the model, functions creates a directory for the model of this name
